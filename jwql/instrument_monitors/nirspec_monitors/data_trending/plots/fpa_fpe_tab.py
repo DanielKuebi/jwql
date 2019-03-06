@@ -1,33 +1,50 @@
 #! /usr/bin/env python
-"""Prepares plots for POWER tab
+"""Prepares plots for Temperature tab
 
     Module prepares plots for mnemonics below. Combines plots in a grid and
     returns tab object.
 
-    Plot 1 - ICE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSICEA / SE_ZINRSICEB
-    INRSH_HK_P15V
-    INRSH_HK_N15V
-    INRSH_HK_VMOTOR
-    INRSH_HK_P5V
-    INRSH_HK_2P5V
-    INRSH_HK_ADCTGAIN
-    INRSH_HK_ADCTOFFSET
-    INRSH_OA_VREFOFF
-    INRSH_OA_VREF
+    Plot 1 - ASIC 1 Voltages
+    IGDP_NRSD_ALG_A1_VDDA
+    IGDP_NRSD_ALG_A1GND4VDA
+    IGDP_NRSD_ALG_A1GND5VRF
+    INRSD_ALG_A1_VDD3P3
+    INRSD_ALG_A1_VDD
+    INRSD_ALG_A1_REF
+    INRSD_A1_DSUB_V
+    INRSD_A1_VRESET_V
+    INRSD_A1_CELLDRN_V
+    INRSD_A1_DRAIN_V
+    INRSD_A1_VBIASGATE_V
+    INRSD_A1_VBIASPWR_V
+    INRSD_A1_TMPSENS_V
 
-    Plot 2 - MCE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSMCEA / SE_ZINRSMCEB
+    Plot 2 - ASIC 1 Currents
+    IGDP_NRSD_ALG_A1_VDD_C
+    IGDP_NRSD_ALG_A1VDAP12C
+    IGDP_NRSD_ALG_A1VDAN12C
+    INRSD_A1_VDDA_I
 
-    Plot 3 - FPE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSFPEA / SE_ZINRSFPEB
-    INRSD_ALG_ACC_P12C
-    INRSD_ALG_ACC_N12C
-    INRSD_ALG_ACC_3D3_1D5_C
-    INRSD_ALG_CHASSIS
+    Plot 3 - ASIC 2 Voltages
+    IGDP_NRSD_ALG_A2_VDDA
+    IGDP_NRSD_ALG_A2GND4VDA
+    IGDP_NRSD_ALG_A2GND5VRF
+    INRSD_ALG_A2_VDD3P3
+    INRSD_ALG_A2_VDD
+    INRSD_ALG_A2_REF
+    INRSD_A2_DSUB_V
+    INRSD_A2_VRESET_V
+    INRSD_A2_CELLDRN_V
+    INRSD_A2_DRAIN_V
+    INRSD_A2_VBIASGATE_V
+    INRSD_A2_VBIASPWR_V
+    INRSD_A2_TMPSENS_V
+
+    Plot 4 - ASIC 2 Currents
+    IGDP_NRSD_ALG_A2_VDD_C
+    IGDP_NRSD_ALG_A2VDAP12C
+    IGDP_NRSD_ALG_A2VDAN12C
+    INRSD_A2_VDDA_I
 
 Authors
 -------
@@ -39,12 +56,12 @@ Use
     used by ``nirspec_dashboard.py``, e.g.:
 
     ::
-        from .plots.power_tab import power_plots
-        tab = power_plots(conn, start, end)
+        from .plots.fpa_fpe_tab import fpa_fpe_plots
+        tab = fpa_fpe_plots(conn, start, end)
 
 Dependencies
 ------------
-    User must provide database "miri_database.db"
+    User must provide database "nirspec_database.db"
 
 """
 import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.sql_interface as sql

@@ -16,7 +16,7 @@ Dependencies
 ------------
 
 """
-import jwql.instrument_monitors.miri_monitors.data_trending.utils.sql_interface as sql
+import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.sql_interface as sql
 from bokeh.plotting import figure
 from bokeh.models import BoxAnnotation, LinearAxis, Range1d
 from bokeh.embed import components

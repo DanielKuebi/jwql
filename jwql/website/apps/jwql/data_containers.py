@@ -86,7 +86,7 @@ def webpage_template_data():
 
     return jwst_launch_date, plot_data
 
-def data_trending():
+def miri_data_trending():
     """Container for Miri datatrending dashboard and components
 
     Returns
@@ -98,6 +98,22 @@ def data_trending():
         dashboard
     """
     import jwql.instrument_monitors.miri_monitors.data_trending.dashboard as dash
+    dashboard, variables = dash.data_trending_dashboard()
+
+    return variables, dashboard
+
+def nirspec_data_trending():
+    """Container for Nirspec datatrending dashboard and components
+
+    Returns
+    -------
+    variables : int
+        nonsense
+    dashboard : list
+        A list containing the JavaScript and HTML content for the
+        dashboard
+    """
+    import jwql.instrument_monitors.nirspec_monitors.data_trending.nirspec_dashboard as dash
     dashboard, variables = dash.data_trending_dashboard()
 
     return variables, dashboard

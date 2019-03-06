@@ -20,11 +20,11 @@ Use
 
 Dependencies
 ------------
-    User must provide "miri_database.db" in folder jwql/database
+    User must provide "nirspec_database.db" in folder jwql/database
 
 """
 import os
-import jwql.instrument_monitors.miri_monitors.data_trending.utils.sql_interface as sql
+import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.sql_interface as sql
 from jwql.utils.utils import get_config, filename_parser
 
 from bokeh.embed import components
@@ -38,13 +38,10 @@ from datetime import date
 
 #import plot functions
 from .plots.power_tab import power_plots
-from .plots.ice_voltage_tab import volt_plots
-from .plots.fpe_voltage_tab import fpe_plots
+from .plots.volt_tab import volt_plots
 from .plots.temperature_tab import temperature_plots
-from .plots.bias_tab import bias_plots
-from .plots.overview_tab import overview_settings
-from .plots.wheel_ratio_tab import wheel_ratios
-
+from .plots.msa_mce_tab import msa_mce_plots
+from .plots.fpa_fpe_tab import fpa_fpe_plots
 
 #configure actual datetime in order to implement range function
 now = datetime.datetime.now()
@@ -71,7 +68,7 @@ def data_trending_dashboard(start = default_start, end = now):
 
     #connect to database
     DATABASE_LOCATION = os.path.join(get_config()['jwql_dir'], 'database')
-    DATABASE_FILE = os.path.join(DATABASE_LOCATION, 'miri_database.db')
+    DATABASE_FILE = os.path.join(DATABASE_LOCATION, 'nirspec_database.db')
 
     conn = sql.create_connection(DATABASE_FILE)
 
@@ -82,16 +79,14 @@ def data_trending_dashboard(start = default_start, end = now):
     variables = dict(init = 1)
 
     #add tabs to dashboard
-    tab0 = overview_settings(conn)
     tab1 = power_plots(conn, start, end)
     tab2 = volt_plots(conn, start, end)
-    tab3 = fpe_plots(conn, start, end)
-    tab4 = temperature_plots(conn, start, end)
-    tab5 = bias_plots(conn, start, end)
-    tab6 = wheel_ratios(conn, start, end)
+    tab3 = temperature_plots(conn, start, end)
+    tab5 = msa_mce_plots(conn, start, end)
+    tab6 = fpa_fpe_plots(conn, start, end)
 
     #build dashboard
-    tabs = Tabs( tabs=[ tab1, tab2, tab3, tab5, tab4, tab6, tab0 ] )
+    tabs = Tabs( tabs=[ tab1, tab2, tab3, tab5, tab4, tab6 ] )
 
     #return dasboard to webapp
     script, div = components(tabs)

@@ -1,33 +1,62 @@
 #! /usr/bin/env python
-"""Prepares plots for POWER tab
+"""Prepares plots for Temperature tab
 
     Module prepares plots for mnemonics below. Combines plots in a grid and
     returns tab object.
 
-    Plot 1 - ICE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSICEA / SE_ZINRSICEB
-    INRSH_HK_P15V
-    INRSH_HK_N15V
-    INRSH_HK_VMOTOR
-    INRSH_HK_P5V
-    INRSH_HK_2P5V
-    INRSH_HK_ADCTGAIN
-    INRSH_HK_ADCTOFFSET
-    INRSH_OA_VREFOFF
-    INRSH_OA_VREF
+    Plot 1 - MCE Board 1 (AIC) Voltages and Currents
+    INRSM_MCE_AIC_1R5_V
+    INRSM_MCE_AIC_3R3_V
+    INRSM_MCE_AIC_5_V
+    INRSM_MCE_AIC_P12_V
+    INRSM_MCE_AIC_N12_V
+    INRSM_MCE_AIC_3R3_I
+    INRSM_MCE_AIC_5_I
+    INRSM_MCE_AIC_P12_I
+    INRSM_MCE_AIC_N12_I
 
-    Plot 2 - MCE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSMCEA / SE_ZINRSMCEB
+    Plot 2 - MCE Board 2 (MDAC) Voltages and Currents
+    INRSM_MCE_MDAC_1R5_V
+    INRSM_MCE_MDAC_3R3_V
+    INRSM_MCE_MDAC_5_V
+    INRSM_MCE_MDAC_P12_V
+    INRSM_MCE_MDAC_N12_V
+    INRSM_MCE_MDAC_3R3_I
+    INRSM_MCE_MDAC_5_I
+    INRSM_MCE_MDAC_P12_I
+    INRSM_MCE_MDAC_N12_I
 
-    Plot 3 - FPE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSFPEA / SE_ZINRSFPEB
-    INRSD_ALG_ACC_P12C
-    INRSD_ALG_ACC_N12C
-    INRSD_ALG_ACC_3D3_1D5_C
-    INRSD_ALG_CHASSIS
+    Plot 3 - QUAD 1
+    INRSM_MSA_Q1_365VDD
+    INRSM_MSA_Q1_365VPP
+    INRSM_MSA_Q1_171VPP
+    IGDPM_MSA_Q1_365IDD
+    IGDPM_MSA_Q1_365IPP
+    IGDPM_MSA_Q1_171RTN
+
+    Plot 4 - QUAD 2
+    INRSM_MSA_Q2_365VDD
+    INRSM_MSA_Q2_365VPP
+    INRSM_MSA_Q2_171VPP
+    IGDPM_MSA_Q2_365IDD
+    IGDPM_MSA_Q2_365IPP
+    IGDPM_MSA_Q2_171RTN
+
+    Plot 5 - QUAD 3
+    INRSM_MSA_Q3_365VDD
+    INRSM_MSA_Q3_365VPP
+    INRSM_MSA_Q3_171VPP
+    IGDPM_MSA_Q3_365IDD
+    IGDPM_MSA_Q3_365IPP
+    IGDPM_MSA_Q3_171RTN
+
+    Plot 6 - QUAD 4
+    INRSM_MSA_Q4_365VDD
+    INRSM_MSA_Q4_365VPP
+    INRSM_MSA_Q4_171VPP
+    IGDPM_MSA_Q4_365IDD
+    IGDPM_MSA_Q4_365IPP
+    IGDPM_MSA_Q4_171RTN
 
 Authors
 -------
@@ -39,12 +68,12 @@ Use
     used by ``nirspec_dashboard.py``, e.g.:
 
     ::
-        from .plots.power_tab import power_plots
-        tab = power_plots(conn, start, end)
+        from .plots.msa_mce_tab import msa_mce_plots
+        tab = msa_mce_plots(conn, start, end)
 
 Dependencies
 ------------
-    User must provide database "miri_database.db"
+    User must provide database "nirspec_database.db"
 
 """
 import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.sql_interface as sql

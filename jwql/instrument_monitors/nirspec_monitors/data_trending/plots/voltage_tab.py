@@ -1,33 +1,34 @@
 #! /usr/bin/env python
-"""Prepares plots for POWER tab
+"""Prepares plots for Ref. Voltage/Currents tab
 
     Module prepares plots for mnemonics below. Combines plots in a grid and
     returns tab object.
 
-    Plot 1 - ICE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSICEA / SE_ZINRSICEB
-    INRSH_HK_P15V
-    INRSH_HK_N15V
-    INRSH_HK_VMOTOR
-    INRSH_HK_P5V
-    INRSH_HK_2P5V
-    INRSH_HK_ADCTGAIN
-    INRSH_HK_ADCTOFFSET
+    Plot 1 - Ref Voltages OA (Voltages)
     INRSH_OA_VREFOFF
     INRSH_OA_VREF
 
-    Plot 2 - MCE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSMCEA / SE_ZINRSMCEB
 
-    Plot 3 - FPE Power Data
-    GP_ZPSVOLT
-    SE_ZINRSFPEA / SE_ZINRSFPEB
-    INRSD_ALG_ACC_P12C
-    INRSD_ALG_ACC_N12C
-    INRSD_ALG_ACC_3D3_1D5_C
-    INRSD_ALG_CHASSIS
+    Plot 2 - CAA (Voltages and Currents)
+    INRSH_CAA_VREFOFF
+    INRSH_CAA_VREF
+    INRSH_LAMP_SEL
+    INRSI_C_CAA_CURRENT
+    INRSI_C_CAA_VOLTAGE
+
+    Plot 3 - FWA (Voltages)
+    INRSH_FWA_ADCMGAIN
+    INRSH_FWA_ADCMOFFSET
+    INRSH_FWA_MOTOR_VREF
+
+    Plot 4 - GWA (Voltages)
+    INRSH_GWA_ADCMGAIN
+    INRSH_GWA_ADCMOFFSET
+    INRSH_GWA_MOTOR_VREF
+
+    Plot 5 - RMA (Voltages)
+    INRSH_RMA_ADCMGAIN
+    INRSH_RMA_ADCMOFFSET
 
 Authors
 -------
@@ -39,12 +40,12 @@ Use
     used by ``nirspec_dashboard.py``, e.g.:
 
     ::
-        from .plots.power_tab import power_plots
-        tab = power_plots(conn, start, end)
+        from .plots.voltage_tab import voltage_plots
+        tab = voltage_plots(conn, start, end)
 
 Dependencies
 ------------
-    User must provide database "miri_database.db"
+    User must provide database "nirpsec_database.db"
 
 """
 import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.sql_interface as sql

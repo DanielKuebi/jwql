@@ -58,6 +58,7 @@ urlpatterns = [
     # WEBPAGE TEMPLATE
     path('webpage_template', views.webpage_template, name='webpage_template'),
     path('miri_data_trending', views.miri_data_trending, name='miri_data_trending'),
+    path('nirspec_data_trending', views.nirspec_data_trending, name='nirspec_data_trending'),
 
     # Authentication
     path('login/', oauth.login, name='login'),

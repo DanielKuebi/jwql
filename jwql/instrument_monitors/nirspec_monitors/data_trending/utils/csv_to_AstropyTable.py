@@ -29,7 +29,7 @@ Notes
 from astropy.table import Table
 from astropy.time import Time
 import warnings
-import jwql.instrument_monitors.miri_monitors.data_trending.utils.mnemonics as mn
+import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.mnemonics as mn
 
 
 class mnemonics:
