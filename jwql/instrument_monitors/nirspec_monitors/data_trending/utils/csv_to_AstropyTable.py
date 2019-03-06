@@ -50,7 +50,7 @@ class mnemonics:
         print('{} was imported - {} lines'.format(import_path, length))
 
         #look for every mnmonic given in mnemonicy.py
-        for mnemonic_name in mn.mnemonic_set_base:
+        for mnemonic_name in mn.mnemonic_set_query:
             temp = self.sort_mnemonic(mnemonic_name, imported_data)
             #append temp to dict with related mnemonic
             if temp != None:
