@@ -55,9 +55,13 @@ urlpatterns = [
     # Home
     path('', views.home, name='home'),
 
+<<<<<<< HEAD
     # WEBPAGE TEMPLATE
     path('webpage_template', views.webpage_template, name='webpage_template'),
     path('nirspec_data_trending', views.nirspec_data_trending, name='nirspec_data_trending'),
+=======
+    path('miri_data_trending', views.miri_data_trending, name='miri_data_trending'),
+>>>>>>> master
 
     # Authentication
     path('login/', oauth.login, name='login'),

@@ -53,10 +53,12 @@ from .forms import FileSearchForm
 from .oauth import auth_info
 from jwql.utils.constants import JWST_INSTRUMENT_NAMES, MONITORS, JWST_INSTRUMENT_NAMES_MIXEDCASE
 from jwql.utils.utils import get_base_url, get_config
+import jwql
 
 FILESYSTEM_DIR = os.path.join(get_config()['jwql_dir'], 'filesystem')
 
 
+<<<<<<< HEAD
 def webpage_template(request):
     """Generate the ``WEBPAGE_TEMPLATE`` page
 
@@ -120,6 +122,8 @@ def nirspec_data_trending(request):
     return render(request, template, context)
 
 
+=======
+>>>>>>> master
 def miri_data_trending(request):
     """Generate the ``MIRI DATA-TRENDING`` page
 
@@ -170,7 +174,8 @@ def about(request, user):
                'inst': '',
                'inst_list': JWST_INSTRUMENT_NAMES,
                'tools': MONITORS,
-               'user': user}
+               'user': user,
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -198,7 +203,8 @@ def archived_proposals(request, user, inst):
     context = {'inst': inst,
                'tools': MONITORS,
                'user': user,
-               'base_url': get_base_url()}
+               'base_url': get_base_url(),
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -233,7 +239,8 @@ def archived_proposals_ajax(request, inst):
                'num_proposals': proposal_info['num_proposals'],
                'thumbnails': {'proposals': proposal_info['proposals'],
                               'thumbnail_paths': proposal_info['thumbnail_paths'],
-                              'num_files': proposal_info['num_files']}}
+                              'num_files': proposal_info['num_files']},
+               'version': jwql.__version__}
 
     return JsonResponse(context, json_dumps_params={'indent': 2})
 
@@ -265,7 +272,8 @@ def archive_thumbnails(request, user, inst, proposal):
                'prop': proposal,
                'tools': MONITORS,
                'user': user,
-               'base_url': get_base_url()}
+               'base_url': get_base_url(),
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -323,7 +331,8 @@ def dashboard(request, user):
                'filesystem_html': os.path.join(output_dir, 'monitor_filesystem',
                                                'filesystem_monitor.html'),
                'dashboard_components': dashboard_components,
-               'dashboard_html': dashboard_html}
+               'dashboard_html': dashboard_html,
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -352,7 +361,8 @@ def engineering_database(request, user):
                'inst_list': JWST_INSTRUMENT_NAMES,
                'user': user,
                'tools': MONITORS,
-               'edb_components': edb_components}
+               'edb_components': edb_components,
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -387,7 +397,8 @@ def home(request, user):
                'inst_list': JWST_INSTRUMENT_NAMES,
                'tools': MONITORS,
                'form': form,
-               'user': user}
+               'user': user,
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -413,7 +424,7 @@ def instrument(request, user, inst):
 
     template = 'instrument.html'
     url_dict = {'fgs': 'http://jwst-docs.stsci.edu/display/JTI/Fine+Guidance+Sensor%2C+FGS?q=fgs',
-                'miri': 'http://jwst-docs.stsci.edu/display/JTI/Mid-Infrared+Instrument%2C+MIRI',
+                'miri': 'http://jwst-docs.stsci.edu/display/JTI/Mid+Infrared+Instrument',
                 'niriss': 'http://jwst-docs.stsci.edu/display/JTI/Near+Infrared+Imager+and+Slitless+Spectrograph',
                 'nirspec': 'http://jwst-docs.stsci.edu/display/JTI/Near+Infrared+Spectrograph',
                 'nircam': 'http://jwst-docs.stsci.edu/display/JTI/Near+Infrared+Camera'}
@@ -423,7 +434,8 @@ def instrument(request, user, inst):
     context = {'inst': inst,
                'tools': MONITORS,
                'user': user,
-               'doc_url': doc_url}
+               'doc_url': doc_url,
+               'version': jwql.__version__}
 
     return render(request, template, context)
 
@@ -485,7 +497,8 @@ def view_header(request, user, inst, file):
                    'tools': MONITORS,
                    'user': user,
                    'header': header,
-                   'file_root': file_root})
+                   'file_root': file_root,
+                   'version': jwql.__version__})
 
 
 @auth_info
@@ -520,6 +533,7 @@ def view_image(request, user, inst, file_root, rewrite=False):
                'jpg_files': image_info['all_jpegs'],
                'fits_files': image_info['all_files'],
                'suffixes': image_info['suffixes'],
-               'num_ints': image_info['num_ints']}
+               'num_ints': image_info['num_ints'],
+               'version': jwql.__version__}
 
     return render(request, template, context)
