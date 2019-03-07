@@ -5,6 +5,8 @@ import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.sql_interfa
 import jwql.instrument_monitors.nirspec_monitors.data_trending.utils.csv_to_AstropyTable as apt
 from jwql.utils.utils import get_config, filename_parser
 
+from astropy.table import Table, Column
+
 from jwql.instrument_monitors.nirspec_monitors.data_trending.utils.process_data import once_a_day_routine
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -15,14 +17,14 @@ directory = '/home/daniel/STScI/trainigData/nirspec_15min/'
 #here some some files contain the same data but they are all incomplete
 #in order to generate a full database we have to import all of them
 filenames = [
-"DOY_234_15m.csv",
-"DOY_236_15m.csv",
-"DOY_238_15m.csv",
-"DOY_240_15m.csv",
-"DOY_235_15m.csv",
-"DOY_237_15m.csv",
-"DOY_239_15m.csv",
-"DOY_241_15m.csv"]
+"DOY_234_15m_chopped.CSV",
+"DOY_236_15m_chopped.CSV",
+"DOY_238_15m_chopped.CSV",
+"DOY_240_15m_chopped.CSV",
+"DOY_235_15m_chopped.CSV",
+"DOY_237_15m_chopped.CSV",
+"DOY_239_15m_chopped.CSV",
+"DOY_241_15m_chopped.CSV"]
 
 def process_file(conn, path):
     '''Parse CSV file, process data within and put to DB
@@ -85,16 +87,29 @@ def process_file(conn, path):
         dataset = (float(m.meta['start']), float(m.meta['end']), length, mean, deviation)
         sql.add_data(conn, key, dataset)
 
+
     for identifier in mn.once_a_day_set:
 
         m = m_raw_data.mnemonic(identifier)
 
-        length = len(m['value'])
-        mean = statistics.mean(m['value'])
-        deviation = statistics.stdev(m['value'])
+        temp = []
 
-        dataset = (float(m.meta['start']), float(m.meta['end']), length, mean, deviation)
-        sql.add_data(conn, key, dataset)
+        #look for all values that fit to the given conditions
+        for element in m:
+            temp.append(float(element['value']))
+
+        #return None if no applicable data was found
+        if len(temp) > 2:
+            length = len(temp)
+            mean = statistics.mean(temp)
+            deviation = statistics.stdev(temp)
+
+            dataset = (float(m.meta['start']), float(m.meta['end']), length, mean, deviation)
+            sql.add_data(conn, identifier, dataset)
+        else:
+            print('No data for {}'.format(identifier))
+
+        del temp
 
 
 def main():

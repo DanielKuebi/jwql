@@ -155,6 +155,7 @@ def once_a_day_routine(mnemonic_data):
 
     del condition_5
 
+
     return data_cond_1, data_cond_2, data_cond_4, data_cond_5
 
 

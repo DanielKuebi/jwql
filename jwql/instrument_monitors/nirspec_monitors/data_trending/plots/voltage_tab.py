@@ -8,11 +8,9 @@
     INRSH_OA_VREFOFF
     INRSH_OA_VREF
 
-
     Plot 2 - CAA (Voltages and Currents)
     INRSH_CAA_VREFOFF
     INRSH_CAA_VREF
-    INRSH_LAMP_SEL
     INRSI_C_CAA_CURRENT
     INRSI_C_CAA_VOLTAGE
 
@@ -62,7 +60,45 @@ import numpy as np
 from astropy.time import Time
 
 
-def ice_power(conn, start, end):
+def ref_volt(conn, start, end):
+    '''Create specific plot and return plot object
+    Parameters
+    ----------
+    conn : DBobject
+        Connection object that represents database
+    start : time
+        Startlimit for x-axis and query (typ. datetime.now()- 4Months)
+    end : time
+        Endlimit for x-axis and query (typ. datetime.now())
+    Return
+    ------
+    p : Plot object
+        Bokeh plot
+    '''
+    # create a new plot with a title and axis labels
+    p = figure( tools = "pan,wheel_zoom,box_zoom,reset,save",
+                toolbar_location = "above",
+                plot_width = 1120,
+                plot_height = 500,
+                x_axis_type = 'datetime',
+                output_backend = "webgl",
+                x_axis_label = 'Date', y_axis_label='Voltage (V)')
+
+    p.grid.visible = True
+    p.title.text = "Ref Voltages OA (Voltages)"
+    pf.add_basic_layout(p)
+
+    a = pf.add_to_plot(p, "OA_VREFOFF", "INRSH_OA_VREFOFF", start, end, conn, color = "red")
+    b = pf.add_to_plot(p, "OA_VREF", "INRSH_OA_VREF", start, end, conn, color = "blue")
+
+    pf.add_hover_tool(p,[a,b])
+
+    p.legend.location = "bottom_right"
+    p.legend.click_policy = "hide"
+
+    return p
+
+def caa_volt(conn, start, end):
     '''Create specific plot and return plot object
     Parameters
     ----------
@@ -81,21 +117,142 @@ def ice_power(conn, start, end):
     # create a new plot with a title and axis labels
     p = figure( tools = "pan,wheel_zoom,box_zoom,reset,save",
                 toolbar_location = "above",
-                plot_width = 560,
+                plot_width = 1120,
                 plot_height = 500,
-                y_range = [4.9,5.1],
                 x_axis_type = 'datetime',
                 output_backend = "webgl",
                 x_axis_label = 'Date', y_axis_label='Voltage (V)')
 
     p.grid.visible = True
-    p.title.text = "FPE Dig. 5V"
+    p.title.text = "CAA Voltages and Currents"
     pf.add_basic_layout(p)
 
-    p.extra_y_ranges = {"current": Range1d(start=2100, end=2500)}
-    a = pf.add_to_plot(p, "FPE Dig. 5V", "IMIR_PDU_V_DIG_5V", start, end, conn, color = "red")
-    b = pf.add_to_plot(p, "FPE Dig. 5V Current", "IMIR_PDU_I_DIG_5V", start, end, conn, y_axis = "current", color = "blue")
+    p.extra_y_ranges = {"current": Range1d(start=0, end=2500)}
+    a = pf.add_to_plot(p, "CAA_VREFOFF", "INRSH_CAA_VREFOFF", start, end, conn, color = "red")
+    b = pf.add_to_plot(p, "CAA_VREF", "INRSH_CAA_VREF", start, end, conn, color = "green")
+    c = pf.add_to_plot(p, "C_CAA_VOLTAGE", "INRSI_C_CAA_CURRENT", start, end, conn, color = "orange")
+    d = pf.add_to_plot(p, "CAA_VREFOFF", "", start, end, conn, color = "red")
+    e = pf.add_to_plot(p, "C_CAA_CURRENT", "INRSI_C_CAA_CURRENT", start, end, conn, y_axis = "current", color = "blue")
     p.add_layout(LinearAxis(y_range_name = "current", axis_label = "Current (mA)", axis_label_text_color = "blue"), 'right')
+
+    pf.add_hover_tool(p,[a,b,c,d,e])
+
+    p.legend.location = "bottom_right"
+    p.legend.click_policy = "hide"
+
+    return p
+
+def fwa_volt(conn, start, end):
+    '''Create specific plot and return plot object
+    Parameters
+    ----------
+    conn : DBobject
+        Connection object that represents database
+    start : time
+        Startlimit for x-axis and query (typ. datetime.now()- 4Months)
+    end : time
+        Endlimit for x-axis and query (typ. datetime.now())
+    Return
+    ------
+    p : Plot object
+        Bokeh plot
+    '''
+
+    # create a new plot with a title and axis labels
+    p = figure( tools = "pan,wheel_zoom,box_zoom,reset,save",
+                toolbar_location = "above",
+                plot_width = 1120,
+                plot_height = 500,
+                x_axis_type = 'datetime',
+                output_backend = "webgl",
+                x_axis_label = 'Date', y_axis_label='Voltage (V)')
+
+    p.grid.visible = True
+    p.title.text = "FWA"
+    pf.add_basic_layout(p)
+
+    a = pf.add_to_plot(p, "ADCMGAIN", "INRSH_FWA_ADCMGAIN", start, end, conn, color = "red")
+    b = pf.add_to_plot(p, "ADCMOFFSET", "INRSH_FWA_ADCMOFFSET", start, end, conn, color = "blue")
+    c = pf.add_to_plot(p, "MOTOR_VREF", "INRSH_FWA_MOTOR_VREF", start, end, conn, color = "green")
+
+    pf.add_hover_tool(p,[a,b,c])
+
+    p.legend.location = "bottom_right"
+    p.legend.click_policy = "hide"
+
+    return p
+
+def gwa_volt(conn, start, end):
+    '''Create specific plot and return plot object
+    Parameters
+    ----------
+    conn : DBobject
+        Connection object that represents database
+    start : time
+        Startlimit for x-axis and query (typ. datetime.now()- 4Months)
+    end : time
+        Endlimit for x-axis and query (typ. datetime.now())
+    Return
+    ------
+    p : Plot object
+        Bokeh plot
+    '''
+
+    # create a new plot with a title and axis labels
+    p = figure( tools = "pan,wheel_zoom,box_zoom,reset,save",
+                toolbar_location = "above",
+                plot_width = 1120,
+                plot_height = 500,
+                x_axis_type = 'datetime',
+                output_backend = "webgl",
+                x_axis_label = 'Date', y_axis_label='Voltage (V)')
+
+    p.grid.visible = True
+    p.title.text = "GWA"
+    pf.add_basic_layout(p)
+
+    a = pf.add_to_plot(p, "ADCMGAIN", "INRSH_GWA_ADCMGAIN", start, end, conn, color = "red")
+    b = pf.add_to_plot(p, "ADCMOFFSET", "INRSH_GWA_ADCMOFFSET", start, end, conn, color = "blue")
+    c = pf.add_to_plot(p, "MOTOR_VREF", "INRSH_GWA_MOTOR_VREF", start, end, conn, color = "green")
+
+    pf.add_hover_tool(p,[a,b,c])
+
+    p.legend.location = "bottom_right"
+    p.legend.click_policy = "hide"
+
+    return p
+
+def rma_volt(conn, start, end):
+    '''Create specific plot and return plot object
+    Parameters
+    ----------
+    conn : DBobject
+        Connection object that represents database
+    start : time
+        Startlimit for x-axis and query (typ. datetime.now()- 4Months)
+    end : time
+        Endlimit for x-axis and query (typ. datetime.now())
+    Return
+    ------
+    p : Plot object
+        Bokeh plot
+    '''
+
+    # create a new plot with a title and axis labels
+    p = figure( tools = "pan,wheel_zoom,box_zoom,reset,save",
+                toolbar_location = "above",
+                plot_width = 1120,
+                plot_height = 500,
+                x_axis_type = 'datetime',
+                output_backend = "webgl",
+                x_axis_label = 'Date', y_axis_label='Voltage (V)')
+
+    p.grid.visible = True
+    p.title.text = "RMA"
+    pf.add_basic_layout(p)
+
+    a = pf.add_to_plot(p, "ADCMGAIN", "INRSH_RMA_ADCMGAIN", start, end, conn, color = "red")
+    b = pf.add_to_plot(p, "ADCMOFFSET", "INRSH_RMA_ADCMOFFSET", start, end, conn, color = "blue")
 
     pf.add_hover_tool(p,[a,b])
 
@@ -104,8 +261,7 @@ def ice_power(conn, start, end):
 
     return p
 
-
-def power_plots(conn, start, end):
+def volt_plots(conn, start, end):
     '''Combines plots to a tab
     Parameters
     ----------
@@ -181,12 +337,14 @@ def power_plots(conn, start, end):
     </body>
     """, width=1100)
 
-    plot1 = ice_power(conn, start, end)
-    plot2 = mce_power(conn, start, end)
-    plot3 = fpe_power(conn, start, end)
+    plot1 = ref_volt(conn, start, end)
+    plot2 = caa_volt(conn, start, end)
+    plot3 = fwa_volt(conn, start, end)
+    plot4 = gwa_volt(conn, start, end)
+    plot5 = rma_volt(conn, start, end)
 
-    layout = Column(descr, plot1, plot2, plot3)
+    layout = Column(descr, plot1, plot2, plot3, plot4, plot5)
 
-    tab = Panel(child = layout, title = "POWER")
+    tab = Panel(child = layout, title = "REF VOLT/CURR")
 
     return tab
